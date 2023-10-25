@@ -1,0 +1,79 @@
+{% extends 'default.html' %}
+{% load bootstrap4 %}
+{% block title %}Responses{% endblock title %}
+
+{% block content %}
+    <br>
+    <h3>Filter responses to my ads:</h3><br>
+	<form method="POST">
+		{% csrf_token %}
+        {{ form }}
+		<input class="btn btn-secondary" type="submit" value="Show">
+	</form><br>
+    {% if title %}
+        <h3>Responses to my ad</h3>
+        <a href="/post/{{ response_post_id }}" style="font-size: 20px;"><b>{{ title }}:</b></a><br>
+        {% if filter_responses %}
+            {% for response in filter_responses %}
+                <a><b>Response: </b></a>{{ response.text }}<br>
+                <span style="font-size: 12px;"><b>The author of the response: {{ response.author.username }} |
+                    date of publication of the response: {{ response.dateCreation|date:'d.M.Y' }} г.</b></span><br>
+                {% if response.status == False %}
+                    <a href="/response/accept/{{ response.id }}" style="font-size: 12px; color:green"><b>to accept</b></a>
+                    <a>&nbsp;&nbsp;&nbsp;</a>
+                    <a href="/response/delete/{{ response.id }}" style="font-size: 12px; color:red"><b>to accept</b></a>
+                {% else %}
+                    <a style="font-size: 14px; color:green"><b>response accepted</b></a>
+                {% endif %}
+                <br><br>
+            {% endfor %}
+        {% else %}
+            <br>
+            <h5>There are no responses</h5>
+        {% endif %}
+    {% else %}
+        <h3>Responses to all my ads:</h3>
+        {% if filter_responses %}
+            {% for response in filter_responses %}
+                <a><b>Advertisement:</b></a>
+                <a href="/post/{{ response.post_id }}" style="font-size: 20px;"><b>{{ response.post.title }}</b></a><br>
+                <span style="font-size: 12px;"><b>Date of publication: {{ response.post.dateCreation|date:'d.M.Y' }} г.</b>
+                </span><br>
+                <a><b>Response: </b></a>{{ response.text }}<br>
+                <span style="font-size: 12px;"><b>The author of the response: {{ response.author.username }} |
+                    date of publication of the response: {{ response.dateCreation|date:'d.M.Y' }} г.</b></span><br>
+                {% if response.status == False %}
+                    <a href="/response/accept/{{ response.id }}" style="font-size: 12px; color:green"><b>to accept</b></a>
+                    <a>&nbsp;&nbsp;&nbsp;</a>
+                    <a href="/response/delete/{{ response.id }}" style="font-size: 12px; color:red"><b>delete</b></a>
+                {% else %}
+                    <a style="font-size: 14px; color:green"><b>response accepted</b></a>
+                {% endif %}
+                <br><br>
+            {% endfor %}
+        {% else %}
+            <h5>There are no responses</h5>
+        {% endif %}
+    {% endif %}
+    <br><br>
+    <h3>My responses to ads:</h3>
+    {% if myresponses %}
+        {% for response in myresponses %}
+            <a><b>Advertisement:</b></a>
+            <a href="/post/{{ response.post_id }}" style="font-size: 20px;"><b>{{ response.post.title }}</b></a><br>
+            <span style="font-size: 12px;"><b>The author of the ad:  {{ response.post.author.username }} |
+                date of publication of the ad: {{ response.post.dateCreation|date:'d.M.Y' }} г.</b></span><br>
+            <a><b>My response:</b></a>
+            {{ response.text }}<br>
+            <span style="font-size: 12px;"><b>Date of publication of the response: {{ response.dateCreation|date:'d.M.Y' }} г.</b></span><br>
+            {% if response.status == True %}
+                <a style="font-size: 14px; color:green"><b>The author of the ad accepted the response</b></a>
+            {% else %}
+                <a style="font-size: 14px; color:red"><b>The author of the ad has not yet accepted the response!</b></a>
+            {% endif %}
+        <br><br>
+        {% endfor %}
+    {% else %}
+        <h5>There are no responses</h5>
+    {% endif %}
+{% endblock content %}

@@ -1,0 +1,12 @@
+django
+django-filter
+django-allauth
+django-dotenv
+django-apscheduler
+python-dotenv
+django>=2.2.1
+sqlalchemy>=1.2.18
+celery>=5.0.5
+django-bootstrap4
+django-ckeditor
+Redis

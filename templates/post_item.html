@@ -1,0 +1,36 @@
+{% extends 'default.html' %}
+
+{% block title %}Ad{% endblock title %}
+
+{% block content %}
+    <br><br>
+    {% autoescape off %}
+    <h2>{{ post.title }}</h2><br>
+    <span>{{ post.text }}<br></span>
+    {% endautoescape %}
+    <hr>
+    <span>Author: {{ post.author }}</span>
+    <span>| Category: {{ post.get_category_display }}</span>
+    <span>| Date of publication: {{ post.dateCreation|date:'d-M-Y f' }}</span>
+
+    <br><br>
+
+    <a class="btn btn-secondary" href="{% url 'index' %}" role="button">Close</a>
+    <a class="btn btn-secondary" href="/post/{{ post.id }}/edit" role="button">Edit</a>
+    <a class="btn btn-secondary" href="/post/{{ post.id }}/delete" role="button">Delete</a>
+
+    {% if user.is_authenticated %}
+    <br><br>
+        {% if respond == "Responded" %}
+            <a style="color:red">Have you responded to this ad.</a><br>
+            <a href="{% url 'responses' %}">View your responses</a>
+        {% elif respond == "my ad" %}
+            <a style="color:red">You can't respond to your ad.</a><br>
+        {% else %}
+            <a class="btn btn-secondary" href="/respond/{{ post.id }}" role="button">Respond</a>
+        {% endif %}
+    {% endif %}
+    <br><br>
+{% endblock content %}
+
+
